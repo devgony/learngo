@@ -123,3 +123,31 @@ func lenAndUpper(name string) (length int, uppercase string) {
 ...
 }
 ```
+
+## #1.5 for, range, ...args (05:59)
+
+- for the only loop
+
+```go
+func superAdd(numbers ...int) int {
+	for i := 0; i < len(numbers); i++ {
+		fmt.Println((numbers[i]))
+	}
+	for index, number := range numbers {
+		fmt.Println(index, number)
+	}
+	return 1
+}
+```
+
+- accomulate
+
+```go
+func superAdd(numbers ...int) int {
+	total := 0
+	for _, number := range numbers {
+		total += number
+	}
+	return total
+}
+```

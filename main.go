@@ -20,10 +20,15 @@ func repeatMe(words ...string) {
 	fmt.Println(words)
 }
 
-func main() {
-	totalLenght, upperName := lenAndUpper("henry")
-	fmt.Println(totalLenght, upperName)
-	// totalLenght, _ := lenAndUpper("henry")
-	// repeatMe("a", "b", "c")
+func superAdd(numbers ...int) int {
+	total := 0
+	for _, number := range numbers {
+		total += number
+	}
+	return total
+}
 
+func main() {
+	result := superAdd(1, 2, 3, 4, 5, 6)
+	fmt.Println(result)
 }
