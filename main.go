@@ -3,6 +3,8 @@ package main
 import (
 	"fmt"
 	"strings"
+
+	"github.com/devgony/learngo/mydict"
 )
 
 func multiply(a int, b int) int {
@@ -45,16 +47,17 @@ func canMyAgeDrink(age int) bool {
 	return false
 }
 
-type person struct {
-	name    string
-	age     int
-	favFood []string
-}
-
 func main() {
-	favFood := []string{"kimchi, ramen"}
-	nico1 := person{"nico", 18, favFood}
-	// nico2 := person{name: "nico", age: 18, favFood} // mixture of field:value and value elements in struct literal
-	nico3 := person{name: "nico", favFood: favFood, age: 18}
-	fmt.Println(nico1, nico3.name)
+	dictionary := mydict.Dictionary{}
+	word := "hello"
+	definition := "greeting"
+	err := dictionary.Add(word, definition)
+	if err != nil {
+		fmt.Println(err)
+	}
+	fmt.Println(dictionary.Search(word))
+	dictionary.Update(word, "bye")
+	fmt.Println(dictionary.Search(word))
+	dictionary.Delete(word)
+	fmt.Println(dictionary.Search(word))
 }
