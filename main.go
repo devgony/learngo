@@ -1,63 +1,36 @@
 package main
 
 import (
+	"errors"
 	"fmt"
-	"strings"
-
-	"github.com/devgony/learngo/mydict"
+	"net/http"
 )
 
-func multiply(a int, b int) int {
-	return a * b
-}
-
-func lenAndUpper(name string) (length int, uppercase string) {
-	defer fmt.Println("I'm done")
-	length = len(name)
-	uppercase = strings.ToUpper(name)
-	return
-}
-
-func repeatMe(words ...string) {
-	fmt.Println(words)
-}
-
-func superAdd(numbers ...int) int {
-	total := 0
-	for _, number := range numbers {
-		total += number
-	}
-	return total
-}
-
-func canIDrink(age int) bool {
-	if koreanAge := age + 2; koreanAge < 18 {
-		return false
-	}
-	return true
-}
-
-func canMyAgeDrink(age int) bool {
-	switch koreanAge := age + 2; koreanAge {
-	case 10:
-		return false
-	case 18:
-		return true
-	}
-	return false
-}
+var errReqeustFailed = errors.New("request failed.")
 
 func main() {
-	dictionary := mydict.Dictionary{}
-	word := "hello"
-	definition := "greeting"
-	err := dictionary.Add(word, definition)
-	if err != nil {
-		fmt.Println(err)
+	urls := []string{
+		"https://www.airbnb.com/",
+		"https://www.google.com/",
+		"https://www.amazon.com/",
+		"https://www.reddit.com/",
+		"https://www.google.com/",
+		"https://soundcloud.com/",
+		"https://www.facebook.com/",
+		"https://www.instagram.com/",
+		"https://academy.nomadcoders.co/",
 	}
-	fmt.Println(dictionary.Search(word))
-	dictionary.Update(word, "bye")
-	fmt.Println(dictionary.Search(word))
-	dictionary.Delete(word)
-	fmt.Println(dictionary.Search(word))
+	for _, url := range urls {
+		fmt.Println(url)
+		hitURL(url)
+	}
+}
+
+func hitURL(url string) error {
+	fmt.Println("Checking:", url)
+	resp, err := http.Get(url)
+	if err != nil || resp.StatusCode >= 400 {
+		return errReqeustFailed
+	}
+	return nil
 }
