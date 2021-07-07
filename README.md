@@ -242,7 +242,9 @@ fmt.Println(array, slice)
 
 # #1.10 Maps (03:37)
 
-## map: object with same type
+## map: object with unified type
+
+## need to init first with `v := map[string]string{}`
 
 ## `map[keyType]valueType{"key1": "val1",}`
 
@@ -492,3 +494,107 @@ func main() {
 ```
 
 # #3.0 hitURL (06:07)
+
+## http.Get: std lib retuning `response, err`
+
+```go
+func hitURL(url string) error {
+	fmt.Println("Checking:", url)
+	resp, err := http.Get(url)
+	if err != nil || resp.StatusCode >= 400 {
+		return errReqeustFailed
+	}
+	return nil
+}
+```
+
+# #3.1 Slow URLChecker (07:33)
+
+## map without initialization get error
+
+```go
+var results map[string]string
+results[url] = result // Err: panic: assignment to entry in nil map
+```
+
+## init map with make
+
+```go
+var results = make(map[string]string)
+```
+
+## init map with {}
+
+```go
+var results = make(map[string]string){}
+```
+
+# #3.2 Goroutines (08:47)
+
+## run at background but main doesn't wait goRoutines
+
+```go
+func main() {
+	go sexyCount("nico")
+	go sexyCount("flynn")
+	time.Sleep(time.Second * 5)
+}
+
+func sexyCount(person string) {
+	for i := 0; i < 10; i++ {
+		fmt.Println(person, "is sexy", i)
+		time.Sleep(time.Second)
+	}
+}
+```
+
+# #3.3 Channels (11:05)
+
+## Using `<-c`, wait for routine
+
+## Blocking operation: If wait for just one channel, it finishes ASA receive first resp
+
+### If over than the number => deadlock
+
+```go
+func main() {
+	c := make(chan string) // init channel
+	people := [2]string{"nico", "henry"}
+	for _, person := range people {
+		fmt.Println("executed: ", person)
+		go isSexy(person, c) // send channel n times
+	}
+	fmt.Println(<-c) // if wait for just one channel, it finishes ASA receive first resp
+	fmt.Println(<-c)
+}
+
+func isSexy(person string, c chan string) {
+	if person == "henry" {
+		time.Sleep(time.Second * 3)
+	} else {
+		time.Sleep(time.Second * 5)
+	}
+	c <- person + " is returned" // return resp when routine finished
+}
+```
+
+# #3.4 Channels Recap (07:37)
+
+## iterate blocking operation
+
+```go
+for i := 0; i < len(people); i++ {
+		fmt.Println(<-c)
+	}
+```
+
+# #3.5 One more Recap (04:30)
+
+## explicit send only channel
+
+```go
+func hitURL(url string, c chan<- requestResult) { // send only
+...
+	c <- requestResult{url: url, status: status}
+...
+```
