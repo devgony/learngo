@@ -598,3 +598,133 @@ func hitURL(url string, c chan<- requestResult) { // send only
 	c <- requestResult{url: url, status: status}
 ...
 ```
+
+# #3.7 FAST URLChecker (04:09)
+
+## final demo
+
+```go
+package main
+
+import (
+	"errors"
+	"fmt"
+	"net/http"
+)
+
+type requestResult struct {
+	url    string
+	status string
+}
+
+var errReqeustFailed = errors.New("Request failed")
+
+func main() {
+	results := map[string]string{}
+	c := make(chan requestResult)
+	urls := []string{
+		"https://www.airbnb.com/",
+		"https://www.google.com/",
+		"https://www.amazon.com/",
+		"https://www.reddit.com/",
+		"https://soundcloud.com/",
+		"https://www.facebook.com/",
+		"https://academy.nomadcoders.co/",
+	}
+	for _, url := range urls {
+		go hitURL(url, c)
+	}
+	for i := 0; i < len(urls); i++ {
+		result := <-c
+		results[result.url] = result.status
+	}
+	for url, status := range results {
+		fmt.Println(url, status)
+	}
+}
+
+func hitURL(url string, c chan<- requestResult) { // send only
+	resp, err := http.Get(url)
+	status := "OK"
+	if err != nil || resp.StatusCode >= 400 {
+		fmt.Println(resp.StatusCode)
+		status = "FAILED"
+	}
+	c <- requestResult{url: url, status: status}
+}
+
+```
+
+# #4.0 getPages part One (07:39)
+
+## goquery
+
+```
+$ go get github.com/PuerkitoBio/goquery
+```
+
+## should close res.Body finally
+
+```go
+func getPages() int {
+	res, err := http.Get(baseURL)
+	checkErr(err)
+	checkCode(res)
+	defer res.Body.Close() // should close finally
+	doc, err := goquery.NewDocumentFromReader(res.Body)
+	checkErr(err)
+	doc.Find(".pagination")
+	return 0
+}
+```
+
+# #4.1 getPages part Two (08:04)
+
+## strconv.Itoa() // convert from integer to ascii
+
+```go
+func getPage(page int) {
+	pageURL := baseURL + "&start=" + strconv.Itoa(page*50)
+	fmt.Println("Requesting", pageURL)
+}
+```
+
+## Iterate DOM
+
+```go
+doc.Find(".pagination").Each(func(i int, s *goquery.Selection) {
+		pages = s.Find("a").Length()
+	})
+```
+
+# #4.2 extractJob part One (08:56)
+
+## jquery-like func of goquery
+
+```go
+searchCards := doc.Find(".resultWithShelf")
+searchCards.Each(func(i int, card *goquery.Selection) {
+	id, _ := card.Attr("data-jk") // returns val, exists
+	title := card.Find(".jobTitle").Text()
+	location := card.Find(".companyLocation").Text()
+	fmt.Println(id, title, location)
+})
+```
+
+# #4.3 extractJob part Two (11:34)
+
+## strings
+
+### trim => field(get string only, return []char) => join
+
+```go
+func cleanString(str string) string {
+	return strings.Join(strings.Fields(strings.TrimSpace(str)), " ")
+}
+```
+
+## append with spread op
+
+```go
+		jobs = append(jobs, extractedJobs...)
+```
