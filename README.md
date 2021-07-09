@@ -728,3 +728,67 @@ func cleanString(str string) string {
 ```go
 		jobs = append(jobs, extractedJobs...)
 ```
+
+# #4.4 Writing Jobs (11:19)
+
+## csv with `encoding/csv`
+
+```go
+func writeJobs(jobs []extractedJob) {
+	file, err := os.Create("jobs.csv")
+	checkErr(err)
+	w := csv.NewWriter(file)
+	defer w.Flush()
+	headers := []string{"Link", "Title", "Location", "Salary", "Summary"}
+	wErr := w.Write(headers)
+	checkErr(wErr)
+	for _, job := range jobs {
+		jobSlice := []string{"https://kr.indeed.com/viewjob?jk=" + job.id, job.title, job.location, job.salary, job.summary}
+		jwErr := w.Write((jobSlice))
+		checkErr(jwErr)
+	}
+}
+```
+
+# #4.5 Channels Time (08:10)
+
+## main => go getPage(i, c) => go extractJob(card, c)
+
+```go
+func getPage(page int) []extractedJob {
+...
+	c := make(chan extractedJob)
+...
+		go extractJob(card, c)
+for i := 0; i < searchCards.Length(); i++ {
+		job := <-c
+		jobs = append(jobs, job)
+
+}
+
+func extractJob(card *goquery.Selection, c chan<- extractedJob) {
+...
+	c <- extractedJob{id, title, location, salary, summary}
+```
+
+# #4.6 More Channels Baby (06:36)
+
+```go
+func main() {
+...
+	c := make(chan []extractedJob)
+	...
+		go getPage(i, c)
+	...
+	for i := 0; i < totalPages; i++ {
+		extractedJobs := <-c
+		jobs = append(jobs, extractedJobs...)
+	}
+...
+func getPage(page int, mainC chan<- []extractedJob) {
+...
+	mainC <- jobs // jobs for a page
+}
+```
+
+# #4.7 Recap (02:28)
