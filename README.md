@@ -792,3 +792,104 @@ func getPage(page int, mainC chan<- []extractedJob) {
 ```
 
 # #4.7 Recap (02:28)
+
+# #5.0 Setup Part One (04:07)
+
+## divide scrapper
+
+```go
+mkdir scrapper
+mv main.go scrapper/scrapper.go
+touch main.go
+
+package scrapper
+
+// Scrap indeed
+func scrape(term) {
+	var baseURL
+}
+
+```
+
+## go echo
+
+```
+go get github.com/labstack/echo/v4
+```
+
+# #5.1 Setup Part Two (05:20)
+
+## html5 auto complete
+
+```
+touch home.html
+type> html:5
+```
+
+## handle function
+
+### Context.File: feed html
+
+```go
+func handleHome(c echo.Context) error {
+	return c.File("home.html")
+}
+```
+
+### Context.FormValue: get submited value
+
+```go
+term := strings.ToLower(scrapper.CleanString(c.FormValue("term")))
+```
+
+### start echo
+
+#### `echo.New().<GET|POST>(<route>, <hanndleFunc>)`
+
+```go
+func main() {
+	e := echo.New()
+	e.GET("/", handleHome)
+	e.POST("/scrape", handleScrape)
+	e.Logger.Fatal(e.Start(":1323"))
+}
+```
+
+# #5.2 File Download (03:56)
+
+## `Context.Attachment(srcFile, donwloadName)` gives download windows
+
+## remove temp file with `defer`
+
+```go
+func handleScrape(c echo.Context) error {
+	const saveName string = "jobs.csv"
+	defer os.Remove(scrapper.TempFileName)
+	term := strings.ToLower(scrapper.CleanString(c.FormValue("term")))
+	scrapper.Scrap(term)
+	return c.Attachment(scrapper.TempFileName, saveName)
+}
+```
+
+# #5.3 Conclusions (01:52)
+
+## framework like Django => `go Buffalo`
+
+- https://gobuffalo.io/en/
+
+## iOS and Android:
+
+- https://github.com/golang/go/wiki/Mobile
+- https://pkg.go.dev/golang.org/x/mobile/cmd/gomobile
+
+## GUI apps:
+
+- https://golangr.com/gui/
+
+## Embedded:
+
+- https://embd.kidoman.io/
+
+## AI:
+
+- https://github.com/gorgonia/gorgonia
