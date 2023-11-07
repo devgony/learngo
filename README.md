@@ -4,21 +4,21 @@
 VSC => install all => lint tool: golint
 ```
 
-# #0.2 Introduction (01:02)
+# #0.2 Introduction
 
-- Go: multicore, concurrncy
+- Go: multicore, concurrency
 
-# #0.5 Software and Installation (09:15)
+# #0.5 Software and Installation
 
 - domain.username based download
 
-# #1.0 Main Package (04:02)
+# #1.0 Main Package
 
 - main is only for compile but mandatory
 - function = func
 - format = fmt
 
-# #1.1 Packages and Imports (04:37)
+# #1.1 Packages and Imports
 
 ## Exporting function should start with `uppercase`
 
@@ -27,7 +27,7 @@ go mod init github.com/devgony/learngo
 go run main.go
 ```
 
-# #1.2 Variables and Constants (03:46)
+# #1.2 Variables and Constants
 
 ## `const`: like const of JS
 
@@ -51,7 +51,7 @@ vName = "liha" // mutable
 vName := "henry"
 ```
 
-# #1.3 Functions part One (08:40)
+# #1.3 Functions part One
 
 - go has types
 
@@ -75,7 +75,7 @@ func multiply(a int, b int) int {
 func multiply(a, b int) int {
 ```
 
-- return void is empty?
+- To return void => omit return type
 
 ## multiple return
 
@@ -105,9 +105,11 @@ func repeatMe(words ...string) {
 repeatMe("a", "b", "c")
 ```
 
-# #1.4 Functions part Two (05:23)
+# #1.4 Functions part Two
 
 ## Naked return
+
+- specify return variables name and type, mutate and use `return` keyword only
 
 ```go
 func lenAndUpper(name string) (length int, uppercase string) {
@@ -128,7 +130,7 @@ func lenAndUpper(name string) (length int, uppercase string) {
 }
 ```
 
-# #1.5 for, range, ...args (05:59)
+# #1.5 for, range, ...args
 
 - for the only loop
 
@@ -156,7 +158,7 @@ func superAdd(numbers ...int) int {
 }
 ```
 
-# #1.6 If with a Twist (03:59)
+# #1.6 If with a Twist
 
 ## Variable expression in if: would excluesively be used only inside if
 
@@ -169,9 +171,9 @@ func canIDrink(age int) bool {
 }
 ```
 
-# #1.7 Switch (02:44)
+# #1.7 Switch
 
-## Variable expression is available as well
+## Variable expression in switch is available as well
 
 ```go
 func canMyAgeDrink(age int) bool {
@@ -200,7 +202,7 @@ func canMyAgeDrink(age int) bool {
 }
 ```
 
-# #1.8 Pointers! (07:24)
+# #1.8 Pointers!
 
 ## `&`: address of var
 
@@ -220,7 +222,7 @@ func main() {
 }
 ```
 
-# #1.9 Arrays and Slices (04:01)
+# #1.9 Arrays and Slices
 
 ## `array := [index]valType{v1, v2...}`: should specify length
 
@@ -240,7 +242,7 @@ slice = append(slice, "a")
 fmt.Println(array, slice)
 ```
 
-# #1.10 Maps (03:37)
+# #1.10 Maps
 
 ## map: object with unified type
 
@@ -255,7 +257,7 @@ nico := map[string]string{"name": "nico", "age": "12"}
 	}
 ```
 
-# #1.11 Structs (06:38)
+# #1.11 Structs
 
 ## struct: object + class
 
@@ -280,7 +282,7 @@ func main() {
 }
 ```
 
-# #2.0 Account + NewAccount (09:45)
+# #2.0 Account + NewAccount
 
 ## To export struct, or property, name should start with UpperCase
 
@@ -313,7 +315,7 @@ func main() {
 }
 ```
 
-# #2.1 Methods part One (05:05)
+# #2.1 Methods part One
 
 ## Receiver: similar to method
 
@@ -327,7 +329,7 @@ func (a Account) Deposit(amount int) {
 }
 ```
 
-# #2.2 Methods part Two (09:31)
+# #2.2 Methods part Two
 
 ## every time, a is copy , to protect origin method
 
@@ -385,7 +387,7 @@ func main() {
 }
 ```
 
-# #2.4 Dictionary part One (07:57)
+# #2.4 Dictionary part One
 
 ## Dictionary: custom type with map
 
@@ -419,7 +421,7 @@ func main() {
 }
 ```
 
-# #2.5 Add Method (05:58)
+# #2.5 Add Method
 
 ## map receiver automatically use \* (not copied)
 
@@ -455,7 +457,7 @@ func main() {
 }
 ```
 
-# #2.6 Update Delete (08:00)
+# #2.6 Update Delete
 
 ```go
 var errCantUpdate = errors.New("Can't update non-existing word")
@@ -493,7 +495,7 @@ func main() {
 }
 ```
 
-# #3.0 hitURL (06:07)
+# #3.0 hitURL
 
 ## http.Get: std lib retuning `response, err`
 
@@ -508,7 +510,7 @@ func hitURL(url string) error {
 }
 ```
 
-# #3.1 Slow URLChecker (07:33)
+# #3.1 Slow URLChecker
 
 ## map without initialization get error
 
@@ -529,7 +531,7 @@ var results = make(map[string]string)
 var results = make(map[string]string){}
 ```
 
-# #3.2 Goroutines (08:47)
+# #3.2 Goroutines
 
 ## run at background but main doesn't wait goRoutines
 
@@ -548,7 +550,7 @@ func sexyCount(person string) {
 }
 ```
 
-# #3.3 Channels (11:05)
+# #3.3 Channels
 
 ## Using `<-c`, wait for routine
 
@@ -578,7 +580,7 @@ func isSexy(person string, c chan string) {
 }
 ```
 
-# #3.4 Channels Recap (07:37)
+# #3.4 Channels Recap
 
 ## iterate blocking operation
 
@@ -588,7 +590,7 @@ for i := 0; i < len(people); i++ {
 	}
 ```
 
-# #3.5 One more Recap (04:30)
+# #3.5 One more Recap
 
 ## explicit send only channel
 
@@ -599,7 +601,7 @@ func hitURL(url string, c chan<- requestResult) { // send only
 ...
 ```
 
-# #3.7 FAST URLChecker (04:09)
+# #3.7 FAST URLChecker
 
 ## final demo
 
@@ -655,7 +657,7 @@ func hitURL(url string, c chan<- requestResult) { // send only
 
 ```
 
-# #4.0 getPages part One (07:39)
+# #4.0 getPages part One
 
 ## goquery
 
@@ -678,7 +680,7 @@ func getPages() int {
 }
 ```
 
-# #4.1 getPages part Two (08:04)
+# #4.1 getPages part Two
 
 ## strconv.Itoa() // convert from integer to ascii
 
@@ -697,7 +699,7 @@ doc.Find(".pagination").Each(func(i int, s *goquery.Selection) {
 	})
 ```
 
-# #4.2 extractJob part One (08:56)
+# #4.2 extractJob part One
 
 ## jquery-like func of goquery
 
@@ -711,7 +713,7 @@ searchCards.Each(func(i int, card *goquery.Selection) {
 })
 ```
 
-# #4.3 extractJob part Two (11:34)
+# #4.3 extractJob part Two
 
 ## strings
 
@@ -729,7 +731,7 @@ func cleanString(str string) string {
 		jobs = append(jobs, extractedJobs...)
 ```
 
-# #4.4 Writing Jobs (11:19)
+# #4.4 Writing Jobs
 
 ## csv with `encoding/csv`
 
@@ -750,7 +752,7 @@ func writeJobs(jobs []extractedJob) {
 }
 ```
 
-# #4.5 Channels Time (08:10)
+# #4.5 Channels Time
 
 ## main => go getPage(i, c) => go extractJob(card, c)
 
@@ -771,7 +773,7 @@ func extractJob(card *goquery.Selection, c chan<- extractedJob) {
 	c <- extractedJob{id, title, location, salary, summary}
 ```
 
-# #4.6 More Channels Baby (06:36)
+# #4.6 More Channels Baby
 
 ```go
 func main() {
@@ -791,9 +793,9 @@ func getPage(page int, mainC chan<- []extractedJob) {
 }
 ```
 
-# #4.7 Recap (02:28)
+# #4.7 Recap
 
-# #5.0 Setup Part One (04:07)
+# #5.0 Setup Part One
 
 ## divide scrapper
 
@@ -817,7 +819,7 @@ func scrape(term) {
 go get github.com/labstack/echo/v4
 ```
 
-# #5.1 Setup Part Two (05:20)
+# #5.1 Setup Part Two
 
 ## html5 auto complete
 
@@ -855,7 +857,7 @@ func main() {
 }
 ```
 
-# #5.2 File Download (03:56)
+# #5.2 File Download
 
 ## `Context.Attachment(srcFile, donwloadName)` gives download windows
 
@@ -871,7 +873,7 @@ func handleScrape(c echo.Context) error {
 }
 ```
 
-# #5.3 Conclusions (01:52)
+# #5.3 Conclusions
 
 ## framework like Django => `go Buffalo`
 
